@@ -23,8 +23,6 @@ class Joystick
   }
   void display()
   {
-    if (timeScale > 0)
-    {
       pushMatrix();
       pushStyle();
       fill(255, 255, 255, 0.1);
@@ -73,11 +71,10 @@ class Joystick
       {
         leaveMe();
       }
-      if(mouseReleased==true)
+      /*if(mouseReleased==true)
       {
         leaveMe();
-      }
-    }
+      }*/
   }
 
 
@@ -112,7 +109,7 @@ class Joystick
 class Projectile
 {
   float xpos, ypos;
-  int speed=5,explac=0;
+  int speed=10,explac=0;
   int w, h;
   Animation pa,pea;
   String prefix,exploprefix="";
@@ -152,14 +149,17 @@ class Projectile
       pa.sclt(64, 64);
     }
     pa.display(xpos, ypos);
-
-    hurt();
+    if(stop == false)
+    {
+      hurt();
+    }
+    
   }
   void hurt()
   {
-    if( (pl.posx>xpos-(pl.size.x/2)&&pl.posx<xpos+(pl.size.x/2)) && ((pl.posy)>ypos-(pl.size.y/2)&&pl.posy<ypos+(pl.size.y/2)))
+    if( overRect1(xpos,ypos,pa.getWidth(),pa.getHeight(),pl.posx,pl.posy)==true)//(pl.posx>xpos-(pl.size.x/2)&&pl.posx<xpos+(pl.size.x/2)) && ((ypos)>pl.posy-(pa.getHeight()/2)&&ypos<pl.posy+(pa.getHeight()/2)))
     {
-      pl.takeDamage(100);
+      pl.takeDamage(10);
       
       //draw hit effect
       stop = true;

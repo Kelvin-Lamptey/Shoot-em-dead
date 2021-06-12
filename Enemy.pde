@@ -8,7 +8,7 @@ class Enemy
   float pos;
   int health = 1;
   int htu;
-  float speed = 1;
+  float speed = 2;
   PImage image;
   int picnum;
   Animation exploanim;
@@ -48,7 +48,7 @@ class Enemy
     {
       image( image, posx-(64), posy-(64));
       exhaustanim.display( posx, posy-(exhaustanim.getHeight()+10));
-      ehb.display(posx, posy-(exhaustanim.getHeight()+20), image.width*1.5, (image.width*1.5)/4);
+      
     } else {
       if ( eloop == true)
       {
@@ -69,6 +69,10 @@ class Enemy
       } else {
         //lbs=(Projectile[])shorten(arrArr(lbs));
       }
+    }
+    if(offScreen==true)
+    {
+      died=true;
     }
     posy+=speed;
     popStyle();
@@ -100,6 +104,7 @@ class Enemy
   void TakeDamage( int damage)
   {
     health -= damage;
+    ehb.display(posx,posy-(exhaustanim.getHeight()+20),image.width*1.5,(image.width*1.5)/4);
   }
 
 }

@@ -1,9 +1,15 @@
 //import processing.sound.*;
 Joystick mj;
 //SoundFile s;
+bomb[] bombs;
 float tt,est,esst;
 int el,nu,chpln;
 String[] pls = {"player.png","Spaceship_01_BLUE.png","Spaceship_02_BLUE.png","Spaceship_03_BLUE.png","Spaceship_04_BLUE.png","Spaceship_05_BLUE.png","Spaceship_06_BLUE.png", "Spaceship_01_RED.png","Spaceship_02_RED.png","Spaceship_03_RED.png","Spaceship_04_RED.png","Spaceship_05_RED.png","Spaceship_06_RED.png","Spaceship_01_GREEN.png","Spaceship_02_GREEN.png","Spaceship_03_GREEN.png","Spaceship_04_GREEN.png","Spaceship_05_GREEN.png","Spaceship_06_GREEN.png",};
+String[] allgo={"Meteor_01.png","Meteor_02.png","Meteor_03.png","Meteor_04.png","Meteor_05.png","Meteor_06.png","Meteor_07.png","Meteor_08.png","Meteor_09.png","Meteor_10.png"};
+String[] allbombs={"Bomb_1_Idle_","Bomb_2_Idle_","Bomb_3_Idle_"};
+String[] allebombs={"Bomb_1_Explosion_","Bomb_2_Explosion_","Bomb_3_Explosion_"};
+int[] abn={10,10,10};
+int[] abne ={9,9,9};
 int[] plgn ={1,2,2,1,2,2,2,2,2,1,2,2,2,2,2,1,2,2,2,2};
 boolean mouseReleased,over=false,pause;
 PImage bg,mbg,sbg,bgi,ph;

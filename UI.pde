@@ -191,3 +191,14 @@ boolean overRect(float x, float y, float width, float height)
     return false;
   }
 }
+boolean overRect1(float x, float y, float width, float height,float xp,float yp)
+{
+  if (xp >= x - width/2 && xp <= x + width/2
+    && yp >= y - height/2 && yp <= y + height/2)
+  {
+
+    return true;
+  } else {
+    return false;
+  }
+}

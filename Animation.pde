@@ -57,6 +57,7 @@ class Animation
   {
     image(images[0],xpos-(images[0].width/2),ypos-(images[0].height/2));
   }
+
   void sclt(int w,int h)
   {
     if(ti!=null)

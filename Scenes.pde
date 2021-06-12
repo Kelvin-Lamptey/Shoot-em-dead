@@ -9,6 +9,9 @@ class mainScene implements Scene
   String n;
   PVector siz= new PVector(200, 200);
   PImage hbi;
+  obj go;
+  obj[] gos;
+  bomb bo;
   mainScene()
   {
     constructor();
@@ -19,10 +22,12 @@ class mainScene implements Scene
     est=0;
     el=0;
     esst=0;
+    gos = new obj[0];
+    bombs=new bomb[0];
     hbi=loadImage("Health_Bar_Table.png");
     enemies = new Enemy[0];
     deadEnemies = new Enemy[0];
-    mj = new Joystick(width/4, (height/4)*3, 350);
+    mj = new Joystick(width/4, (height/4)*3, 200);
     pl = new Player( width/2, height/2, s, enemies, chpl);
     pl.gs=plgn[chpln];
     pb = new Button(100, 100, "Pause_BTN.png");
@@ -39,6 +44,7 @@ class mainScene implements Scene
   }
   void display()
   {
+    frameRate(60);
     background(mbg);
     if ( tt == 0 )
     {
@@ -50,6 +56,17 @@ class mainScene implements Scene
       enm = new Enemy(random(64, width-64), 0, s, int(round(random(40, 100))));
       enemies = (Enemy[])append(enemies, enm);
       el++;
+      if(int(round(random(0,2)))==1)
+      {
+        go = new obj(allgo[int(round(random(0,allgo.length-1)))],100,100);
+        gos=(obj[])append(gos,go);
+      }
+      if(int(round(random(0,2)))==1)
+      {
+        int num=int(round(random(0,allbombs.length-1)));
+        bo = new bomb(allbombs[num],allebombs[num],abn[num],abne[num],loadImage(allbombs[num]+"000.png").width-(100),loadImage(allbombs[num]+"000.png").height-100);
+        bombs=(bomb[])append(bombs,bo);
+      }
       tt=frameCount;
     }
     if ( est == 0 )
@@ -61,7 +78,7 @@ class mainScene implements Scene
     {
       if (enemies[i] != null)
       {
-        if (frameCount == est+300+(enemies[i].picnum*3) && enemies[i].died==false)
+        if (frameCount == est+200+(enemies[i].picnum*2) && enemies[i].died==false)
         {
           enemies[i].shoot();
           est=frameCount;
@@ -75,6 +92,14 @@ class mainScene implements Scene
       pl.superSpeed = false;
     }
 
+    for(int i=0;i<gos.length;i++)
+    {
+      gos[i].display();
+    }
+    for(int i=0;i<bombs.length;i++)
+    {
+      bombs[i].display();
+    }
     for ( int i=0; i < enemies.length; i++)
     {
       if (enemies [i]!= null)
@@ -108,10 +133,11 @@ class mainScene implements Scene
     pb.display(width - 200, 100);
 
     image(hbi, 100-(hbi.width/2), 100-(hbi.height/2));
-    hb.value = (pl.health/pl.maxHealth)*100;
+    hb.value = (pl.health*100)/pl.maxHealth;
     hb.display(100, 100, 400, 100);
     //text(str(el)+"/"+str(enemies.length), width/5, height/3);
 
+    text(pl.health/10,100,100);
 
     text("score", width/5*4, height/3);
     text(deadEnemies.length, width/5*4, height/3+70);
@@ -292,16 +318,16 @@ class mdScn implements Scene
   }
   void displayUI()
   {
-    survival.display(width/4, height/2);
-    mtps.display(width/4*2, height/2);
+    survival.display(width/4*2, height/2);
+    mtps.display(width/4*3, height/2);
     bkb.display(width/2, height/4*3);
     pushStyle();
     pushMatrix();
     fill(255);
     textSize(35);
     textAlign(CENTER);
-    text("Survivor", width/4, height/2);
-    text("Multiplayer", width/4*2, height/2);
+    text("Survivor", width/4*2, height/2);
+    text("Multiplayer", width/4*3, height/2);
     popMatrix();
     popStyle();
     //plyb.display(width/3,height/2);
@@ -394,23 +420,7 @@ class chPl implements Scene
     text("CHOOSE YOUR SPACESHIP", width/2, height/4);
     if (true)
     {
-      for (int j=0; j<w; j++)
-      {
-        float x = (width/2)-((wo*w)/2)+(j*wo);
-        PImage pi = loadImage(pls[j]);
-        pi.resize(wo, ho);
-        rect(x, height/2, wo, ho);
-        image(pi, x-(pi.width/2), (height/2)-(pi.height/2));
-        if (mousePressed == true)
-        {
-          if (overRect(x, height/2, wo, ho)==true)
-          {
-            chpl=pls[j];
-            chpln=j;
-            mSceneMg.loadScene(nu);
-          }
-        }
-      }
+      drawRow(0);
       for (int j=0; j<pls.length%w; j++)
       {
         float x = (width/2)-((pls.length%w)*wo)/2+j*wo;
@@ -428,12 +438,29 @@ class chPl implements Scene
           }
         }
       }
-      /*for(int j=0;j<pls.length%w;j++){
-       rect((width/2)-(100*100)/2+j*100,height/2+200,100,100);
-       }*/
     }
 
     popMatrix();
     popStyle();
   }
+  void drawRow(float h)
+    {
+      for (int j=0; j<w; j++)
+      {
+        float x = (width/2)-((wo*w)/2)+(j*wo);
+        PImage pi = loadImage(pls[j]);
+        pi.resize(wo, ho);
+        rect(x, height/2+h, wo, ho);
+        image(pi, x-(pi.width/2), (height/2+h)-(pi.height/2+h));
+        if (mousePressed == true)
+        {
+          if (overRect(x, height/2+h, wo, ho)==true)
+          {
+            chpl=pls[j];
+            chpln=j;
+            mSceneMg.loadScene(nu);
+          }
+        }
+      }
+    }
 }

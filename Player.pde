@@ -10,7 +10,7 @@ class Player
   float posx, pos;
   float bombnum = 5;
   float xp, yp;
-  float speed = 1;
+  float speed = 2;
   int health, gs;
   int maxHealth = 1000;
   PImage image;
@@ -96,7 +96,7 @@ class Player
   void bomb( int cel)
   {
     bombnum --;
-    for (int i =0; i < cel+1; i++)
+    for (int i =0; i < enemies.length; i++)
     {
       if (enemies[i] != null)
       {
@@ -158,6 +158,13 @@ class Player
             
           }
         }
+      }
+    }
+    for(bomb b:bombs)
+    {
+      if(b.xpos>posx-100&&b.xpos<posx+100)
+      {
+        b.explode=true;
       }
     }
   }
