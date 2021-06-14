@@ -45,6 +45,7 @@ class mainScene implements Scene
   void display()
   {
     frameRate(60);
+    text(frameRate, 100, 100);
     background(mbg);
     if ( tt == 0 )
     {
@@ -56,16 +57,16 @@ class mainScene implements Scene
       enm = new Enemy(random(64, width-64), 0, s, int(round(random(40, 100))));
       enemies = (Enemy[])append(enemies, enm);
       el++;
-      if(int(round(random(0,2)))==1)
+      if (int(round(random(0, 2)))==1)
       {
-        go = new obj(allgo[int(round(random(0,allgo.length-1)))],100,100);
-        gos=(obj[])append(gos,go);
+        go = new obj(allgo[int(round(random(0, allgo.length-1)))], 100, 100);
+        gos=(obj[])append(gos, go);
       }
-      if(int(round(random(0,2)))==1)
+      if (int(round(random(0, 2)))==1)
       {
-        int num=int(round(random(0,allbombs.length-1)));
-        bo = new bomb(allbombs[num],allebombs[num],abn[num],abne[num],loadImage(allbombs[num]+"000.png").width-(100),loadImage(allbombs[num]+"000.png").height-100);
-        bombs=(bomb[])append(bombs,bo);
+        int num=int(round(random(0, allbombs.length-1)));
+        bo = new bomb(allbombs[num], allebombs[num], abn[num], abne[num], loadImage(allbombs[num]+"000.png").width-(100), loadImage(allbombs[num]+"000.png").height-100);
+        bombs=(bomb[])append(bombs, bo);
       }
       tt=frameCount;
     }
@@ -92,13 +93,29 @@ class mainScene implements Scene
       pl.superSpeed = false;
     }
 
-    for(int i=0;i<gos.length;i++)
+    for (int i=0; i<gos.length; i++)
     {
-      gos[i].display();
+      if (gos[i]!=null)
+      {
+        gos[i].display();
+
+        if (gos[i].offScreen==true)
+        {
+          gos[i]=null;
+        }
+      }
     }
-    for(int i=0;i<bombs.length;i++)
+    for (int i=0; i<bombs.length; i++)
     {
-      bombs[i].display();
+      if (bombs[i]!=null)
+      {
+        bombs[i].display();
+
+        if (bombs[i].offScreen==true)
+        {
+          bombs[i]=null;
+        }
+      }
     }
     for ( int i=0; i < enemies.length; i++)
     {
@@ -137,7 +154,7 @@ class mainScene implements Scene
     hb.display(100, 100, 400, 100);
     //text(str(el)+"/"+str(enemies.length), width/5, height/3);
 
-    text(pl.health/10,100,100);
+    text(pl.health/10, 100, 100);
 
     text("score", width/5*4, height/3);
     text(deadEnemies.length, width/5*4, height/3+70);
@@ -201,7 +218,28 @@ void pUI()
   sttb.display((width/2), (height/2)+50);
   mmb.display((width/2)+200, (height/2)+50);
 }
-
+boolean window(String question)
+{
+  boolean haa=false;
+  image(bgi, width/2-(bgi.width/2), height/2-(bgi.height/2));
+  textSize(30);
+  text(question,width/2-(ph.width/2), height/2-(bgi.height/3));
+  okbtn.display((width/2)+100, (height/2-(bgi.height/2))+500);
+  clbtn.display((width/2)-100, (height/2-(bgi.height/2))+500);
+  
+  if(okbtn.mouseReleasedb==true)
+  {
+    haa= true;
+    hasana =true;
+  }
+  if(clbtn.mouseReleasedb==true)
+  {
+    haa= false;
+    hasana=true;
+  }
+    return haa;
+  
+}
 
 
 
@@ -212,14 +250,21 @@ void pUI()
 
 class fScene implements Scene
 {
+  String text;
+  int wo=100, ho=100, w=10;
+  Button host,cnct;
   fScene ()
   {
     constructor();
   }
   void constructor()
   {
-    fsb = new Button("Start");
-    feb = new Button("Exit");
+    text="";
+    feb = new Button(100, 100, "Close_BTN.png");
+    host= new Button(100,100,"Table.png");
+    host.text="Host";
+    cnct=new Button(100,100,"Table.png");
+    cnct.text="Connect";
     textAlign( CENTER);
     textSize( 50);
   }
@@ -229,16 +274,43 @@ class fScene implements Scene
   }
   void displayUI()
   {
-    fsb.display( width/3, height/2);
-    feb.display((width/3)*2, height/2);
+     host.display( width/3, height/2);
+     cnct.display(width/3*2,height/2);
+     feb.display((width/2), height/2+200);
 
     if (feb.mouseReleasedb)
+     {
+       System.exit(1);
+     }
+     if(cnct.mouseReleasedb==true)
+     {
+       connecting=true;
+     }
+     if (host.mouseReleasedb==true)
+     {
+       hosting=true;
+     }
+     if(hosting==true)
+     {
+       host();
+     }
+     if(connecting==true)
+     {
+       connect();
+     }
+  }
+  void drawRow(float h)
+  {
+    for (int j=0; j<w; j++)
     {
-      System.exit(1);
-    }
-    if (fsb.mouseReleasedb)
-    {
-      mSceneMg.loadScene(1);
+      float x = (width/2)-((wo*w)/2)+(j*wo);
+      rect(x, height/2+h, wo, ho);
+      if (mousePressed == true)
+      {
+        if (overRect(x, height/2+h, wo, ho)==true)
+        {
+        }
+      }
     }
   }
 }
@@ -354,29 +426,72 @@ class mdScn implements Scene
 class ssmScn implements Scene
 {
   Button plyb, bkb;
+  String text;
+  boolean askfs,save;
   ssmScn()
   {
     constructor();
   }
   void constructor()
   {
-    //plyb = new Button(100, 100, "Play_BTN.png");
+    text="";
+    plyb = new Button(100, 100, "Play_BTN.png");
     bkb = new Button(100, 100, "Close_BTN.png");
   }
   void display()
   {
     background(sbg);
+
+    if (keyP==true)
+    {
+      if (key == CODED)
+      {
+        if (keyCode ==BACKSPACE && text.length() > 1)
+        {
+          text=text.substring(0,text.length()-2);
+        }
+      } else {
+        text=text+str(key).toLowerCase();
+      }
+    }
+    if (mouseReleased == true && askfs==false)
+    {
+      openKeyboard();
+    }
   }
   void displayUI()
   {
+    textSize(100);
+    text("PLAY AS :", width/2, height/4);
+    textSize(20);
+    if(text=="")
+    {
+      text("tap screen to input name", width/2, height/4*2);
+    }
+    textSize(50);
+    text(text, width/2, (height/4*2)+100);
+
+    plyb.display(width/2+100, height/4*3);
     bkb.display(width/2, height/4*3);
     if (bkb.mouseReleasedb==true)
     {
       mSceneMg.loadScene(3);
     }
+    if(plyb.mouseReleasedb==true)
+    {
+      askfs=true;
+    }
+    if(askfs == true && hasana==false)
+    {
+      save=window("Do you want to save this name?");
+    }
+    if(hasana == true)
+    {
+      mSceneMg.loadScene(2);
+      hasana=false;
+    }
   }
 }
-
 
 
 class chPl implements Scene
@@ -444,23 +559,23 @@ class chPl implements Scene
     popStyle();
   }
   void drawRow(float h)
+  {
+    for (int j=0; j<w; j++)
     {
-      for (int j=0; j<w; j++)
+      float x = (width/2)-((wo*w)/2)+(j*wo);
+      PImage pi = loadImage(pls[j]);
+      pi.resize(wo, ho);
+      rect(x, height/2+h, wo, ho);
+      image(pi, x-(pi.width/2), (height/2+h)-(pi.height/2+h));
+      if (mousePressed == true)
       {
-        float x = (width/2)-((wo*w)/2)+(j*wo);
-        PImage pi = loadImage(pls[j]);
-        pi.resize(wo, ho);
-        rect(x, height/2+h, wo, ho);
-        image(pi, x-(pi.width/2), (height/2+h)-(pi.height/2+h));
-        if (mousePressed == true)
+        if (overRect(x, height/2+h, wo, ho)==true)
         {
-          if (overRect(x, height/2+h, wo, ho)==true)
-          {
-            chpl=pls[j];
-            chpln=j;
-            mSceneMg.loadScene(nu);
-          }
+          chpl=pls[j];
+          chpln=j;
+          mSceneMg.loadScene(nu);
         }
       }
     }
+  }
 }

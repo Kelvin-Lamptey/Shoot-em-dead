@@ -1,3 +1,5 @@
+import processing.net.*;
+
 int timeScale=1;
 
 interface Scene

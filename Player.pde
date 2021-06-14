@@ -93,14 +93,14 @@ class Player
       pl.speed = 1;
     }
   }
-  void bomb( int cel)
+  void bomb()
   {
     bombnum --;
     for (int i =0; i < enemies.length; i++)
     {
       if (enemies[i] != null)
       {
-        enemies[i].TakeDamage(1);
+        enemies[i].TakeDamage(100);
       }
     }
   }

@@ -11,11 +11,11 @@ String[] allebombs={"Bomb_1_Explosion_","Bomb_2_Explosion_","Bomb_3_Explosion_"}
 int[] abn={10,10,10};
 int[] abne ={9,9,9};
 int[] plgn ={1,2,2,1,2,2,2,2,2,1,2,2,2,2,2,1,2,2,2,2};
-boolean mouseReleased,over=false,pause;
+boolean hosting,connecting,mouseReleased,over=false,pause,keyP;
 PImage bg,mbg,sbg,bgi,ph;
 sceneMg mSceneMg;
 Scene mScene,fnScene,mstartScene,modeScn,mtplScn,charSScn;
-Button sb,ob,pb,eb,feb,fsb,backb;
+Button sb,ob,pb,eb,feb,fsb,backb,okbtn,clbtn;
 Button clb, rtb, plb, sttb, mmb;
 int[] enemiesr=new int[10];
 Enemy[] enemies;// = new Enemy[100];
@@ -23,7 +23,10 @@ Enemy[] deadEnemies ;//= new Enemy[0];
 Player pl;
 healthBar hb;
 PFont suif;
+String[] users={"pl1"};
+String curuser="";
 String chpl="player.png";
+public boolean hasana=false;
 
 
 void setup()
@@ -68,6 +71,9 @@ void setup()
   //s = new SoundFile(this, "laser.wav");
   suif=createFont("ethnocentric rg.ttf",100);
   textFont(suif,100);
+  
+  okbtn=new Button(100,100,"Ok_BTN.png");
+  clbtn=new Button(100,100,"Close_BTN.png");
 }
 
 
@@ -77,6 +83,7 @@ void draw()
 
   mSceneMg.update();
   mouseReleased = false;
+  keyP=false;
 }
 
 void mouseReleased ()
@@ -88,4 +95,8 @@ void backPressed()
 {
   pause =true;
   println("Bye");
+}
+void keyPressed()
+{
+  keyP=true;
 }
