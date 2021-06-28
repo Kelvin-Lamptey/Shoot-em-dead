@@ -18,7 +18,7 @@ class obj
     ypos+=0.5;
     image(img,xpos,ypos);
     
-    offScreen = (ypos>height+100);
+    offScreen = (ypos>height+10);
     
   }
 }
@@ -49,6 +49,6 @@ class bomb
       }
       exploanim.display(xpos,ypos);
     }
-    offScreen = (ypos>height+100);
+    offScreen = (ypos>height+10);
   }
 }

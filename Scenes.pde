@@ -12,6 +12,8 @@ class mainScene implements Scene
   obj go;
   obj[] gos;
   bomb bo;
+  int esst;
+  float est;
   mainScene()
   {
     constructor();
@@ -57,12 +59,12 @@ class mainScene implements Scene
       enm = new Enemy(random(64, width-64), 0, s, int(round(random(40, 100))));
       enemies = (Enemy[])append(enemies, enm);
       el++;
-      if (int(round(random(0, 2)))==1)
+      if (int(round(random(0, 3)))==1)
       {
         go = new obj(allgo[int(round(random(0, allgo.length-1)))], 100, 100);
         gos=(obj[])append(gos, go);
       }
-      if (int(round(random(0, 2)))==1)
+      if (int(round(random(0, 3)))==1)
       {
         int num=int(round(random(0, allbombs.length-1)));
         bo = new bomb(allbombs[num], allebombs[num], abn[num], abne[num], loadImage(allbombs[num]+"000.png").width-(100), loadImage(allbombs[num]+"000.png").height-100);
@@ -73,17 +75,20 @@ class mainScene implements Scene
     if ( est == 0 )
     {
       est = frameCount;
-      esst=random(300);
-    }
+      esst=int(round(random(100, 200)));
+    }wsb(str(est));
     for (int i=0; i<enemies.length; i++)
     {
-      if (enemies[i] != null)
+      if (frameCount == (est+esst))
       {
-        if (frameCount == est+200+(enemies[i].picnum*2) && enemies[i].died==false)
+        if (enemies[i] != null )
         {
-          enemies[i].shoot();
-          est=frameCount;
-        }
+          if (enemies[i].died==false)
+          {
+              enemies[i].shoot();
+              est=frameCount;
+          }
+         }
       }
     }
     if ( frameCount > 1000 && frameCount < 2000)
@@ -111,7 +116,7 @@ class mainScene implements Scene
       {
         bombs[i].display();
 
-        if (bombs[i].offScreen==true)
+        if (bombs[i].offScreen==true||bombs[i].explode==true)
         {
           bombs[i]=null;
         }
@@ -122,7 +127,7 @@ class mainScene implements Scene
       if (enemies [i]!= null)
       {
         enemies[i].display();
-        if (enemies[i].offScreen == true)
+        if (enemies[i].offScreen == true ||enemies[i].candie==true)
         {
           enemies[i] = null;
         }
@@ -223,22 +228,21 @@ boolean window(String question)
   boolean haa=false;
   image(bgi, width/2-(bgi.width/2), height/2-(bgi.height/2));
   textSize(30);
-  text(question,width/2-(ph.width/2), height/2-(bgi.height/3));
+  text(question, width/2-(ph.width/2), height/2-(bgi.height/3));
   okbtn.display((width/2)+100, (height/2-(bgi.height/2))+500);
   clbtn.display((width/2)-100, (height/2-(bgi.height/2))+500);
-  
-  if(okbtn.mouseReleasedb==true)
+
+  if (okbtn.mouseReleasedb==true)
   {
     haa= true;
     hasana =true;
   }
-  if(clbtn.mouseReleasedb==true)
+  if (clbtn.mouseReleasedb==true)
   {
     haa= false;
     hasana=true;
   }
-    return haa;
-  
+  return haa;
 }
 
 
@@ -252,7 +256,7 @@ class fScene implements Scene
 {
   String text;
   int wo=100, ho=100, w=10;
-  Button host,cnct;
+  Button host, cnct;
   fScene ()
   {
     constructor();
@@ -261,9 +265,9 @@ class fScene implements Scene
   {
     text="";
     feb = new Button(100, 100, "Close_BTN.png");
-    host= new Button(100,100,"Table.png");
+    host= new Button(100, 100, "Table.png");
     host.text="Host";
-    cnct=new Button(100,100,"Table.png");
+    cnct=new Button(100, 100, "Table.png");
     cnct.text="Connect";
     textAlign( CENTER);
     textSize( 50);
@@ -274,30 +278,30 @@ class fScene implements Scene
   }
   void displayUI()
   {
-     host.display( width/3, height/2);
-     cnct.display(width/3*2,height/2);
-     feb.display((width/2), height/2+200);
+    host.display( width/3, height/2);
+    cnct.display(width/3*2, height/2);
+    feb.display((width/2), height/2+200);
 
     if (feb.mouseReleasedb)
-     {
-       System.exit(1);
-     }
-     if(cnct.mouseReleasedb==true)
-     {
-       connecting=true;
-     }
-     if (host.mouseReleasedb==true)
-     {
-       hosting=true;
-     }
-     if(hosting==true)
-     {
-       host();
-     }
-     if(connecting==true)
-     {
-       connect();
-     }
+    {
+      mSceneMg.loadScene(0);
+    }
+    if (cnct.mouseReleasedb==true)
+    {
+      connecting=true;
+    }
+    if (host.mouseReleasedb==true)
+    {
+      hosting=true;
+    }
+    if (hosting==true)
+    {
+      host();
+    }
+    if (connecting==true)
+    {
+      connect();
+    }
   }
   void drawRow(float h)
   {
@@ -427,7 +431,7 @@ class ssmScn implements Scene
 {
   Button plyb, bkb;
   String text;
-  boolean askfs,save;
+  boolean askfs, save;
   ssmScn()
   {
     constructor();
@@ -448,7 +452,7 @@ class ssmScn implements Scene
       {
         if (keyCode ==BACKSPACE && text.length() > 1)
         {
-          text=text.substring(0,text.length()-2);
+          text=text.substring(0, text.length()-2);
         }
       } else {
         text=text+str(key).toLowerCase();
@@ -464,7 +468,7 @@ class ssmScn implements Scene
     textSize(100);
     text("PLAY AS :", width/2, height/4);
     textSize(20);
-    if(text=="")
+    if (text=="")
     {
       text("tap screen to input name", width/2, height/4*2);
     }
@@ -477,15 +481,15 @@ class ssmScn implements Scene
     {
       mSceneMg.loadScene(3);
     }
-    if(plyb.mouseReleasedb==true)
+    if (plyb.mouseReleasedb==true)
     {
       askfs=true;
     }
-    if(askfs == true && hasana==false)
+    if (askfs == true && hasana==false)
     {
       save=window("Do you want to save this name?");
     }
-    if(hasana == true)
+    if (hasana == true)
     {
       mSceneMg.loadScene(2);
       hasana=false;
@@ -502,6 +506,8 @@ class chPl implements Scene
   int ho = 120;
   float x=width/2;
   float y=height/2;
+  int fullln;
+  int lastln;
   int[][] rows = new int[2][1];
   chPl()
   {
@@ -510,19 +516,13 @@ class chPl implements Scene
   }
   void constructor()
   {
-    /*for(int i=0;i<pls.length;i++)
-     {
-     if(rows[0][rows[0].length-1]+200 <width)
-     {
-     rows[0]=append(rows[0],(width/2)-((700/2)-(i*100)));
-     }else{
-     rows[1]=append(rows[1],(width/2)-((700/2)-(100+1)));
-     }
-     }*/
+    lastln=pls.length%w;
+    fullln=(pls.length-lastln)/w;
   }
   void display()
   {
     background(sbg);
+    frameRate(60);
   }
   void displayUI()
   {
@@ -535,10 +535,13 @@ class chPl implements Scene
     text("CHOOSE YOUR SPACESHIP", width/2, height/4);
     if (true)
     {
-      drawRow(0);
-      for (int j=0; j<pls.length%w; j++)
+      for (int i=0; i<fullln; i++)
       {
-        float x = (width/2)-((pls.length%w)*wo)/2+j*wo;
+        drawRow((i+1)*ho);
+      }
+      for (int j=0; j<lastln; j++)
+      {
+        float x = (width/2)-((lastln)*wo)/2+j*wo;
         rect(x, height/2+ho, wo, ho);
         PImage pi = loadImage(pls[j+10]);
         pi.resize( wo, ho);
@@ -566,7 +569,7 @@ class chPl implements Scene
       PImage pi = loadImage(pls[j]);
       pi.resize(wo, ho);
       rect(x, height/2+h, wo, ho);
-      image(pi, x-(pi.width/2), (height/2+h)-(pi.height/2+h));
+      image(pi, x-(pi.width/2), (height/2+h)-(pi.height/2));
       if (mousePressed == true)
       {
         if (overRect(x, height/2+h, wo, ho)==true)

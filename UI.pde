@@ -202,3 +202,8 @@ boolean overRect1(float x, float y, float width, float height,float xp,float yp)
     return false;
   }
 }
+
+void wsb(String txt)
+{
+  stsb.text=txt;
+}

@@ -14,7 +14,7 @@ class Player
   int health, gs;
   int maxHealth = 1000;
   PImage image;
-  boolean superSpeed = false;
+  boolean dead,superSpeed= false;
   Animation anim;
   SoundFile shootS;
   Projectile lb;
@@ -95,7 +95,6 @@ class Player
   }
   void bomb()
   {
-    bombnum --;
     for (int i =0; i < enemies.length; i++)
     {
       if (enemies[i] != null)
@@ -117,23 +116,27 @@ class Player
           pushStyle();
           stroke(227, 210, 44);
           strokeWeight(power*2);
-          
+
           if (gs==1)
-            {
-              line(posx+25, posy, posx+25, 0);
-            }else if (gs==2)
-            {
-              line(posx-15, posy, posx-15, 0);
-              line(posx+45, posy, posx+45, 0);
-            }else{
-              line(posx,posy,random(0,width),0);
-            }
+          {
+            line(posx+25, posy, posx+25, 0);
+          } else if (gs==2)
+          {
+            line(posx-15, posy, posx-15, 0);
+            line(posx+45, posy, posx+45, 0);
+          } else {
+            line(posx, posy, random(0, width), 0);
+          }
           kill();
           popStyle();
           mt[i].busy = false;
           //s.stop();
         }
       }
+    }
+    if(health<=0)
+    {
+      dead=true;
     }
   }
   void takeDamage( int damage)
@@ -155,16 +158,18 @@ class Player
           {
             enemies[i].TakeDamage(int(round(power)));
           } else {
-            
           }
         }
       }
     }
-    for(bomb b:bombs)
+    for (bomb b : bombs)
     {
-      if(b.xpos>posx-100&&b.xpos<posx+100)
+      if (b!=null)
       {
-        b.explode=true;
+        if (b.xpos>posx-100&&b.xpos<posx+100)
+        {
+          b.explode=true;
+        }
       }
     }
   }

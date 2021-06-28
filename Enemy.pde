@@ -4,7 +4,7 @@ class Enemy
   PVector size=new PVector();
   float posy;
   float posx;
-  boolean died = false;
+  boolean candie,died = false;
   float pos;
   int health = 1;
   int htu;
@@ -24,6 +24,7 @@ class Enemy
     posx = x;
     posy = y;
     pos = posy;
+    candie=false;
     picnum = round(random(0.0, 4.0));
     image = loadImage("enemy"+str(int((picnum)))+".png");
     image.resize( int(csize.x), int(csize.y));
@@ -37,7 +38,8 @@ class Enemy
   {
     pushStyle();
     pushMatrix();
-    offScreen = (posy>height+100);
+    candie=exploanim.hasStop;
+    offScreen = (posy>height+10);
     ehb.value= toPercent(health, htu);
     fill(255, 0, 0);
     if ( health <= 0)
@@ -104,7 +106,10 @@ class Enemy
   void TakeDamage( int damage)
   {
     health -= damage;
-    ehb.display(posx,posy-(exhaustanim.getHeight()+20),image.width*1.5,(image.width*1.5)/4);
+    if(died==false)
+    {
+      ehb.display(posx,posy-(exhaustanim.getHeight()+20),image.width*1.5,(image.width*1.5)/4);
+    }
   }
 
 }

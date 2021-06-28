@@ -2,7 +2,7 @@
 Joystick mj;
 //SoundFile s;
 bomb[] bombs;
-float tt,est,esst;
+float tt;
 int el,nu,chpln;
 String[] pls = {"player.png","Spaceship_01_BLUE.png","Spaceship_02_BLUE.png","Spaceship_03_BLUE.png","Spaceship_04_BLUE.png","Spaceship_05_BLUE.png","Spaceship_06_BLUE.png", "Spaceship_01_RED.png","Spaceship_02_RED.png","Spaceship_03_RED.png","Spaceship_04_RED.png","Spaceship_05_RED.png","Spaceship_06_RED.png","Spaceship_01_GREEN.png","Spaceship_02_GREEN.png","Spaceship_03_GREEN.png","Spaceship_04_GREEN.png","Spaceship_05_GREEN.png","Spaceship_06_GREEN.png",};
 String[] allgo={"Meteor_01.png","Meteor_02.png","Meteor_03.png","Meteor_04.png","Meteor_05.png","Meteor_06.png","Meteor_07.png","Meteor_08.png","Meteor_09.png","Meteor_10.png"};
@@ -15,7 +15,7 @@ boolean hosting,connecting,mouseReleased,over=false,pause,keyP;
 PImage bg,mbg,sbg,bgi,ph;
 sceneMg mSceneMg;
 Scene mScene,fnScene,mstartScene,modeScn,mtplScn,charSScn;
-Button sb,ob,pb,eb,feb,fsb,backb,okbtn,clbtn;
+Button sb,ob,pb,eb,feb,fsb,backb,okbtn,clbtn,stsb;
 Button clb, rtb, plb, sttb, mmb;
 int[] enemiesr=new int[10];
 Enemy[] enemies;// = new Enemy[100];
@@ -67,10 +67,10 @@ void setup()
    {
    mbg.resize(width, height);
    }
-   
+   stsb=new Button(500,100);
   //s = new SoundFile(this, "laser.wav");
-  suif=createFont("ethnocentric rg.ttf",100);
-  textFont(suif,100);
+  /*suif=createFont("ethnocentric rg.ttf",100);
+  textFont(suif,100);*/
   
   okbtn=new Button(100,100,"Ok_BTN.png");
   clbtn=new Button(100,100,"Close_BTN.png");
@@ -80,10 +80,13 @@ void setup()
 void draw()
 {
   //background( 200);
+  frameRate(60);
+  wsb(str(frameRate));
 
   mSceneMg.update();
   mouseReleased = false;
   keyP=false;
+  stsb.display(500,height-150);
 }
 
 void mouseReleased ()

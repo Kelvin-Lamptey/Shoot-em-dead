@@ -2,7 +2,7 @@ import processing.net.*;
 
 int timeScale=1;
 
-interface Scene
+public interface Scene
 {
   public boolean active = true;
   public void display();

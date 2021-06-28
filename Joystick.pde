@@ -137,7 +137,7 @@ class Projectile
     {
       pea = new Animation(exploprefix,explac,false);
     }
-    offScreen = ((xpos>width+100||xpos<0) || (ypos>height+100||ypos<0));
+    offScreen = ((xpos>width+10||xpos<0) || (ypos>height+10||ypos<0));
     pa.scl(64, 64);
     if(stop==false)
     {
