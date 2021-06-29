@@ -23,28 +23,31 @@ class Joystick
   }
   void display()
   {
-      pushMatrix();
-      pushStyle();
-      fill(255, 255, 255, 0.1);
-      rectMode(CENTER);
-      stroke(0);
+    pushMatrix();
+    pushStyle();
+    fill(255, 255, 255, 0.1);
+    rectMode(CENTER);
+    stroke(0);
 
-      value.x = (txpos-xpos)/sp;
-      value.y = (typos-ypos)/sp;
-      if ( over())
+    value.x = (txpos-xpos)/sp;
+    value.y = (typos-ypos)/sp;
+    if ( over())
+    {
+      move = true;
+    } else {
+      move = false;
+    }
+    ellipse( xpos, ypos, size, size);
+    if ( move == true)
+    {
+      if (mousePressed == true && over()==true)
       {
-        move = true;
-      } else {
-        move = false;
-      }
-      ellipse( xpos, ypos, size, size);
-      if ( move == true)
-      {
-        if (mousePressed == true)
+        for (int i=0; i < maxTouchEvents; i++)
         {
-          for (int i=0; i < maxTouchEvents; i++)
+
+          if (mt[i].touched == true && mt[i].busy == false)
           {
-            if (mt[i].touched == true && mt[i].busy == false)
+            if (over()==true)
             {
               mt[i].busy = true;
               if (mt[i].motionX <= xpos+sp && mt[i].motionX >= xpos-sp)
@@ -60,21 +63,23 @@ class Joystick
           }
         }
       }
+    }
 
-      popStyle();
-      pushStyle();
-      fill(255, 255, 255);
-      ellipse( txpos, typos, size/2, size/2);
-      popStyle();
-      popMatrix();
+    popStyle();
+    pushStyle();
+    fill(255, 255, 255);
+    ellipse( txpos, typos, size/2, size/2);
+    popStyle();
+    popMatrix();
+    /*
       if (mouseReleased==true && over()==false)
-      {
-        leaveMe();
-      }
-      /*if(mouseReleased==true)
-      {
-        leaveMe();
-      }*/
+     {
+     leaveMe();
+     }*/
+    if (mouseReleased==true )
+    {
+      leaveMe();
+    }
   }
 
 
@@ -98,6 +103,28 @@ class Joystick
     }
     return isOver;
   }
+  boolean over1(float x, float y, float sizea)
+  {
+    boolean isOver = false;
+    for (int i=0; i < maxTouchEvents; i++)
+    {
+      if (mousePressed==true)
+      {
+        if ( mt[i].touched == true)
+        {
+          float disX = x - mt[i].motionX;
+          float disY = y - mt[i].motionY;
+          if (sqrt(sq(disX) + sq(disY)) <(sizea / 2) )
+          {
+            isOver = true;
+          } else {
+            isOver = false;
+          }
+        }
+      }
+    }
+    return isOver;
+  }
 
   public void leaveMe()
   {
@@ -109,12 +136,12 @@ class Joystick
 class Projectile
 {
   float xpos, ypos;
-  int speed=10,explac=0;
+  int speed=10, explac=0;
   int w, h;
-  Animation pa,pea;
-  String prefix,exploprefix="";
+  Animation pa, pea;
+  String prefix, exploprefix="";
   int t;
-  boolean stop=false,offScreen = false;
+  boolean stop=false, offScreen = false;
   Projectile(String imgprefix, int count, float x, float y)
   {
     pa=new Animation(imgprefix, count, true);
@@ -133,13 +160,13 @@ class Projectile
   }
   void display()
   {
-    if(pea==null && exploprefix !="")
+    if (pea==null && exploprefix !="")
     {
-      pea = new Animation(exploprefix,explac,false);
+      pea = new Animation(exploprefix, explac, false);
     }
     offScreen = ((xpos>width+10||xpos<0) || (ypos>height+10||ypos<0));
     pa.scl(64, 64);
-    if(stop==false)
+    if (stop==false)
     {
       ypos+=(speed*t);
     }
@@ -149,24 +176,23 @@ class Projectile
       pa.sclt(64, 64);
     }
     pa.display(xpos, ypos);
-    if(stop == false)
+    if (stop == false)
     {
       hurt();
     }
-    
   }
   void hurt()
   {
-    if( overRect1(xpos,ypos,pa.getWidth(),pa.getHeight(),pl.posx,pl.posy)==true)//(pl.posx>xpos-(pl.size.x/2)&&pl.posx<xpos+(pl.size.x/2)) && ((ypos)>pl.posy-(pa.getHeight()/2)&&ypos<pl.posy+(pa.getHeight()/2)))
+    if ( overRect1(xpos, ypos, pa.getWidth(), pa.getHeight(), pl.posx, pl.posy)==true)//(pl.posx>xpos-(pl.size.x/2)&&pl.posx<xpos+(pl.size.x/2)) && ((ypos)>pl.posy-(pa.getHeight()/2)&&ypos<pl.posy+(pa.getHeight()/2)))
     {
       pl.takeDamage(10);
-      
+
       //draw hit effect
       stop = true;
 
-      if(pea!= null)
+      if (pea!= null)
       {
-        pea.display(xpos,ypos);
+        pea.display(xpos, ypos);
       }
     }
   }

@@ -12,7 +12,7 @@ int[] abn={10,10,10};
 int[] abne ={9,9,9};
 int[] plgn ={1,2,2,1,2,2,2,2,2,1,2,2,2,2,2,1,2,2,2,2};
 boolean hosting,connecting,mouseReleased,over=false,pause,keyP;
-PImage bg,mbg,sbg,bgi,ph;
+PImage bg,mbg,sbg,bgi;
 sceneMg mSceneMg;
 Scene mScene,fnScene,mstartScene,modeScn,mtplScn,charSScn;
 Button sb,ob,pb,eb,feb,fsb,backb,okbtn,clbtn,stsb;
@@ -32,7 +32,7 @@ public boolean hasana=false;
 void setup()
 {
   fullScreen();
-  orientation(LANDSCAPE);
+  //orientation(LANDSCAPE);
   for (int i=0; i < maxTouchEvents; i++)
   {
     mt[i] = new MultiTouch();
@@ -80,7 +80,7 @@ void setup()
 void draw()
 {
   //background( 200);
-  frameRate(60);
+  //frameRate(60);
   wsb(str(frameRate));
 
   mSceneMg.update();

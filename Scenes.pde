@@ -36,8 +36,6 @@ class mainScene implements Scene
     hb = new healthBar();
     bgi = loadImage("Window.png");
     bgi.resize(width/2, (height/2)+200);
-    ph = loadImage("Header_pause.png");
-    ph.resize(200, 100);
     mmb = new Button(100, 100, "Menu_BTN.png");
     plb = new Button(100, 100, "Play_BTN.png");
     sttb = new Button(100, 100, "Settings_BTN.png");
@@ -45,7 +43,7 @@ class mainScene implements Scene
     clb = new Button(100, 100, "Close_BTN.png");
   }
   void display()
-  {
+  {wsb(str(pause));
     frameRate(60);
     text(frameRate, 100, 100);
     background(mbg);
@@ -76,7 +74,7 @@ class mainScene implements Scene
     {
       est = frameCount;
       esst=int(round(random(100, 200)));
-    }wsb(str(est));
+    }
     for (int i=0; i<enemies.length; i++)
     {
       if (frameCount == (est+esst))
@@ -116,7 +114,7 @@ class mainScene implements Scene
       {
         bombs[i].display();
 
-        if (bombs[i].offScreen==true||bombs[i].explode==true)
+        if (bombs[i].offScreen==true||bombs[i].died==true)
         {
           bombs[i]=null;
         }
@@ -138,7 +136,7 @@ class mainScene implements Scene
     pl.display();
     mj.display();
   }
-  void endGame()
+  /*void endGame()
   {
     pause = false;
     timeScale = 1;
@@ -148,7 +146,7 @@ class mainScene implements Scene
       saveln("highscore.kel", hs);
     }
     mSceneMg.loadScene(1);
-  }
+  }*/
   void displayUI()
   {
     textSize(35);
@@ -174,35 +172,26 @@ class mainScene implements Scene
     if (pb.mouseReleasedb == true)
     {
       pause = !pause;
+      if(pause==false)
+      {
+        resume();
+      }else{
+        pause();
+      }
     }
+
     if (pause== true)
     {
-      pause();
-    } else
-    {
-      resume();
+      //draw pause UI
+      pUI();
+    } else{
+      //resume();
     }
-    if (rtb.mouseReleasedb == true)
-    {
-      endGame();
-    }
-    if (mmb.mouseReleasedb == true)
-    {
-      pause = false;
-      timeScale = 1;
-      mSceneMg.loadScene(0);
-    }
-    if (clb.mouseReleasedb == true)
-    {
-      pause = false;
-    }
+    
   }
   void pause()
   {
     timeScale = 0;
-
-    //display pause menu
-    pUI();
   }
   void resume()
   {
@@ -214,38 +203,6 @@ class mainScene implements Scene
     //sound
   }
 }
-void pUI()
-{
-  image(bgi, width/2-(bgi.width/2), height/2-(bgi.height/2));
-  image(ph, width/2-(ph.width/2), height/2-(bgi.height/3));
-  clb.display((width/2), (height/2-(bgi.height/2))+500);
-  rtb.display((width/2)-200, (height/2)+50);
-  sttb.display((width/2), (height/2)+50);
-  mmb.display((width/2)+200, (height/2)+50);
-}
-boolean window(String question)
-{
-  boolean haa=false;
-  image(bgi, width/2-(bgi.width/2), height/2-(bgi.height/2));
-  textSize(30);
-  text(question, width/2-(ph.width/2), height/2-(bgi.height/3));
-  okbtn.display((width/2)+100, (height/2-(bgi.height/2))+500);
-  clbtn.display((width/2)-100, (height/2-(bgi.height/2))+500);
-
-  if (okbtn.mouseReleasedb==true)
-  {
-    haa= true;
-    hasana =true;
-  }
-  if (clbtn.mouseReleasedb==true)
-  {
-    haa= false;
-    hasana=true;
-  }
-  return haa;
-}
-
-
 
 
 

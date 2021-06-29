@@ -191,7 +191,7 @@ boolean overRect(float x, float y, float width, float height)
     return false;
   }
 }
-boolean overRect1(float x, float y, float width, float height,float xp,float yp)
+boolean overRect1(float x, float y, float width, float height, float xp, float yp)
 {
   if (xp >= x - width/2 && xp <= x + width/2
     && yp >= y - height/2 && yp <= y + height/2)
@@ -206,4 +206,74 @@ boolean overRect1(float x, float y, float width, float height,float xp,float yp)
 void wsb(String txt)
 {
   stsb.text=txt;
+}
+
+void pUI()
+{
+  wsb(str(pause));
+  image(bgi, width/2-(bgi.width/2), height/2-(bgi.height/2));
+  //image(ph, width/2-(ph.width/2), height/2-(bgi.height/3));
+  text("PAUSE", width/2/*-(textWidth("PAUSE")/2)*/, height/3);
+  clb.display((width/2), (height/2-(bgi.height/2))+500);
+  rtb.display((width/2)-200, (height/2)+50);
+  sttb.display((width/2), (height/2)+50);
+  mmb.display((width/2)+200, (height/2)+50);
+  if (clb.mouseReleasedb == true)
+  {
+    resume();
+    pause=false;
+    /*pause = !pause;
+      if(pause==false)
+      {
+        resume();
+      }else{
+        pause();
+      }*/
+  }
+  if (rtb.mouseReleasedb == true)
+  {
+    endGame();
+  }
+  if (mmb.mouseReleasedb == true)
+  {
+    pause = false;
+    timeScale = 1;
+    mSceneMg.loadScene(0);
+  }
+}
+boolean window(String question)
+{
+  boolean haa=false;
+  image(bgi, width/2-(bgi.width/2), height/2-(bgi.height/2));
+  textSize(30);
+  text(question, width/2-(bgi.width/2), height/2-(bgi.height/3));
+  okbtn.display((width/2)+100, (height/2-(bgi.height/2))+500);
+  clbtn.display((width/2)-100, (height/2-(bgi.height/2))+500);
+
+  if (okbtn.mouseReleasedb==true)
+  {
+    haa= true;
+    hasana =true;
+  }
+  if (clbtn.mouseReleasedb==true)
+  {
+    haa= false;
+    hasana=true;
+  }
+  return haa;
+}
+void endGame()
+{
+  pause = false;
+  timeScale = 1;
+  if ( deadEnemies.length > int(readln("highscore.kel", 0)))
+  {
+    String[] hs = {str(deadEnemies.length)};
+    saveln("highscore.kel", hs);
+  }
+  mSceneMg.loadScene(1);
+}
+void resume()
+{
+  timeScale=1;
 }

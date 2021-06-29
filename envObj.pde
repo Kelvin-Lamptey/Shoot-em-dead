@@ -27,7 +27,7 @@ class bomb
   float xpos=random(0,width),ypos;
   int w,h,i=0;
   Animation idlanim,exploanim;
-  boolean offScreen,explode = false;
+  boolean offScreen,died,explode = false;
   bomb(String fn,String efn,int count1,int count2,int wi,int hi)
   {
     idlanim=new Animation(fn,count1,true,"",3);
@@ -48,6 +48,7 @@ class bomb
         i = 1;
       }
       exploanim.display(xpos,ypos);
+     died=exploanim.hasStop;
     }
     offScreen = (ypos>height+10);
   }
